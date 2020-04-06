@@ -30,6 +30,7 @@ jobs:
       - name: Use Nerdbank.GitVersioning to set version variables
         uses: aarnott/nbgv@v0.3
         with:
+          path: src/LifxCloud.NET/LifxCloud.NET/LifxCloud.NET.csproj
           setAllVars: true
       
       # Update the version before build
