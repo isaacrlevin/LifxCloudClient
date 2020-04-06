@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30001.183
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifxCloud.NET", "LifxCloud.NET\LifxCloud.NET.csproj", "{929AE13A-B3DF-40DF-A4FD-3C26CC09ADAB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifxCloud.NET.Console", "LifxCloud.NET.Console\LifxCloud.NET.Console.csproj", "{D4FBF619-E80A-477E-A2C0-42BA8085F374}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{929AE13A-B3DF-40DF-A4FD-3C26CC09ADAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{929AE13A-B3DF-40DF-A4FD-3C26CC09ADAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{929AE13A-B3DF-40DF-A4FD-3C26CC09ADAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{929AE13A-B3DF-40DF-A4FD-3C26CC09ADAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4FBF619-E80A-477E-A2C0-42BA8085F374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4FBF619-E80A-477E-A2C0-42BA8085F374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4FBF619-E80A-477E-A2C0-42BA8085F374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4FBF619-E80A-477E-A2C0-42BA8085F374}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D9D0B3A-6954-4705-B1FD-AACA3FD82E8E}
+	EndGlobalSection
+EndGlobal
