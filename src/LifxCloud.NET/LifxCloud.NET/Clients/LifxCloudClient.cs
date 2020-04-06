@@ -41,8 +41,7 @@ namespace LifxCloud.NET
             RequestFactory _factory = new RequestFactory();
             _client = _factory.CreateClient(new AuthenticationHeaderValue("Bearer", appToken));
 
-            _client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer",
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
             appToken);
         }        
 
