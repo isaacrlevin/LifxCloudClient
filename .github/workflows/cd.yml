@@ -15,7 +15,7 @@ jobs:
     name: list on nuget
     runs-on: windows-latest
     env:
-      Project_Path: src\LifxCloud.NET\LifxCloud.NET\LifxCloud.NET.csproj
+      Project_Path: src/LifxCloud.NET/LifxCloud.NET/LifxCloud.NET.csproj
     steps:
       - uses: actions/checkout@v2
 
