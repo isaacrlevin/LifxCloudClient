@@ -18,6 +18,14 @@ jobs:
       Project_Path: src/LifxCloud.NET/LifxCloud.NET/LifxCloud.NET.csproj
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+     
+      # Use Nerdbank.GitVersioning to set version variables: https://github.com/AArnott/nbgv
+      - name: Use Nerdbank.GitVersioning to set version variables
+        uses: aarnott/nbgv@v0.3
+        with:
+          setAllVars: true
 
       # Required for a specific dotnet version that doesn't come with ubuntu-latest / windows-latest
       # Visit bit.ly/2synnZl to see the list of SDKs that are pre-installed with ubuntu-latest / windows-latest
@@ -25,12 +33,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.100
-
-      # Use Nerdbank.GitVersioning to set version variables: https://github.com/AArnott/nbgv
-      - name: Use Nerdbank.GitVersioning to set version variables
-        uses: aarnott/nbgv@v0.3
-        with:
-          setAllVars: true
 
       # Update the version before build
       - name: Update manifest version
