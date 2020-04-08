@@ -25,20 +25,20 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.100
-     
+
       # Use Nerdbank.GitVersioning to set version variables: https://github.com/AArnott/nbgv
       - name: Use Nerdbank.GitVersioning to set version variables
         uses: aarnott/nbgv@v0.3
         with:
           setAllVars: true
-      
+
       # Update the version before build
       - name: Update manifest version
         run: |
           [xml]$manifest = get-content ".\$env:Project_Path"
           $manifest.Project.PropertyGroup.Version = "$env:NBGV_SimpleVersion.0"
           $manifest.save(".\$env:Project_Path")
-      
+
       # Publish
       - name: publish on version change
         uses: rohith/publish-nuget@v2
@@ -50,6 +50,6 @@ jobs:
           # TAG_COMMIT: true # Flag to enable / disalge git tagging
           # TAG_FORMAT: v* # Format of the git tag, [*] gets replaced with version
           NUGET_KEY: ${{secrets.NUGET_API_KEY}} # nuget.org API key
-          PACKAGE_NAME: LifxCloudClient
+          PACKAGE_NAME: LifxCloud
 
 

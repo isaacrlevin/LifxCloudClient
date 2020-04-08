@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LifxCloud.NET.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -6,23 +7,20 @@ namespace LifxCloud.NET.Console
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             var client = await LifxCloudClient.CreateAsync("");
 
-            System.Console.WriteLine("Getting Lights");
-            var lights = await client.ListLights();
+            var groups = await client.ListGroups(Selector.All);
 
-
-            System.Console.WriteLine("Setting State");
-            var foo = await client.SetState(lights.FirstOrDefault().id,
-                new Models.SetStateRequest
-                {
-                    power = "on",
-                    brightness = 1,
-                    duration = 1,
-                    color = "yellow saturation:1"
-                });
+            await groups.FirstOrDefault().SetState(
+               new Models.SetStateRequest
+               {
+                   Power = PowerState.On,
+                   Brightness = 1,
+                   Duration = 1,
+                   Color = LifxColor.Red
+               });
         }
     }
 }

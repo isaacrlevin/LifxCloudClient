@@ -25,9 +25,9 @@ namespace LifxCloud.NET
             return await GetResponseData<Light>($"{SceneEndPoint}{selector}");
         }
 
-        public async Task<SetStateResponse> ActivateScene(string scene_uuid, SetStateRequest request)
+        public async Task<ApiResponse> ActivateScene(string scene_uuid, SetStateRequest request)
         {
-            return await PutResponseData<SetStateResponse>($"{SceneEndPoint}{scene_uuid}/activate", request);
+            return await PutResponseData<ApiResponse>($"{SceneEndPoint}{scene_uuid}/activate", request);
         }
     }
 }

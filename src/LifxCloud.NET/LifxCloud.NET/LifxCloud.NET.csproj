@@ -1,14 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
-    <PackageId>LifxCloudClient</PackageId>
+    <PackageId>LifxCloud</PackageId>
     <Version>1.0.0</Version>
     <Authors>Isaac Levin</Authors>
     <Company>Isaac Levin</Company>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/isaacrlevin/LifxCloudClient</PackageProjectUrl>
     <PackageTags>LIFX</PackageTags>
+    <Copyright>Copyright ©  2020</Copyright>
+    <PackageLicenseUrl>https://github.com/isaacrlevin/LifxCloudClient/blob/master/LICENSE</PackageLicenseUrl>
+    <Summary>.NET Standard 2.0 Library to manage LIFX Cloud-Enabled Bulbs</Summary>
+    <Description>.NET Standard 2.0 Library to manage LIFX Cloud-Enabled Bulbs</Description>
     <RepositoryUrl>https://github.com/isaacrlevin/LifxCloudClient</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Title>LIFX Cloud</Title>
   </PropertyGroup>
 
   <ItemGroup>

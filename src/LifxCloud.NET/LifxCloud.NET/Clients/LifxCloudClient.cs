@@ -15,15 +15,19 @@ namespace LifxCloud.NET
 {
     public partial class LifxCloudClient
     {
-        private static HttpClient _client { get; set; }
+
+        internal const float DEFAULT_DURATION = 1f;
+        internal const PowerState DEFAULT_POWER_ON = PowerState.On ;
+
+        private static HttpClient Client { get; set; }
 
         private const string Url = "https://api.lifx.com/v1/";
 
-        private string LightEndPoint = $"{Url}lights/";
+        private readonly string LightEndPoint = $"{Url}lights/";
 
-        private string SceneEndPoint = $"{Url}scenes/";
+        private readonly string SceneEndPoint = $"{Url}scenes/";
 
-        private string ColorEndPoint = $"{Url}color/";
+        private readonly string ColorEndPoint = $"{Url}color/";
 
         private LifxCloudClient()
         {
@@ -39,49 +43,59 @@ namespace LifxCloud.NET
         public void Initialize(string appToken)
         {
             RequestFactory _factory = new RequestFactory();
-            _client = _factory.CreateClient(new AuthenticationHeaderValue("Bearer", appToken));
+            Client = _factory.CreateClient(new AuthenticationHeaderValue("Bearer", appToken));
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
             appToken);
-        }        
+        }
 
         public async Task<ColorResult> ValidateColor(string color)
         {
             return await GetResponseData<ColorResult>($"{ColorEndPoint}?string={color}");
         }
 
-        internal static async Task<T> PutResponseData<T>(string url, object data)
+        internal static async Task<ApiResponse> PutResponseData<T>(string url, object data)
         {
             return await await ResilientCall(async () =>
             {
                 var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-                var response = await _client.PutAsync(url, content);
+                var response = await Client.PutAsync(url, content);
                 var result = await response.Content.ReadAsStringAsync();
 
-                if (string.IsNullOrEmpty(result))
+                ApiResponse resource;
+
+                if (result.Contains("error"))
                 {
-                    throw new Exception("Something Bad Happened");
+                    resource = JsonConvert.DeserializeObject<ErrorResponse>(result);
+                }
+                else
+                {
+                    resource = JsonConvert.DeserializeObject<SuccessResponse>(result);
                 }
 
-                var resource = JsonConvert.DeserializeObject<T>(result);
                 return resource;
             });
         }
 
-        internal static async Task<T> PostResponseData<T>(string url, object data)
+        internal static async Task<ApiResponse> PostResponseData<T>(string url, object data)
         {
             return await await ResilientCall(async () =>
             {
                 var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-                var response = await _client.PostAsync(url, content);
+                var response = await Client.PostAsync(url, content);
                 var result = await response.Content.ReadAsStringAsync();
 
-                if (string.IsNullOrEmpty(result))
+                ApiResponse resource;
+
+                if (result.Contains("error"))
                 {
-                    throw new Exception("Something Bad Happened");
+                    resource = JsonConvert.DeserializeObject<ErrorResponse>(result);
+                }
+                else
+                {
+                    resource = JsonConvert.DeserializeObject<SuccessResponse>(result);
                 }
 
-                var resource = JsonConvert.DeserializeObject<T>(result);
                 return resource;
             });
         }
@@ -90,7 +104,7 @@ namespace LifxCloud.NET
         {
             return await await ResilientCall(async () =>
             {
-                var response = await _client.GetAsync(url);
+                var response = await Client.GetAsync(url);
                 var result = await response.Content.ReadAsStringAsync();
 
                 if (string.IsNullOrEmpty(result))
@@ -141,8 +155,7 @@ namespace LifxCloud.NET
 
         private static bool IsTransient(Exception ex)
         {
-            var webException = ex as WebException;
-            if (webException != null)
+            if (ex is WebException webException)
             {
                 // If the web exception contains one of the following status values
                 // it might be transient.
