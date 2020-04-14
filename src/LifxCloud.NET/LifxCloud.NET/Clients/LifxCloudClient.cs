@@ -100,7 +100,7 @@ namespace LifxCloud.NET
             });
         }
 
-        internal static async Task<T> GetResponseData<T>(String url)
+        internal static async Task<ApiResponse> GetResponseData<T>(String url)
         {
             return await await ResilientCall(async () =>
             {
