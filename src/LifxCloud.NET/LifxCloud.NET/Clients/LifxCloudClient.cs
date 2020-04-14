@@ -105,14 +105,19 @@ namespace LifxCloud.NET
             return await await ResilientCall(async () =>
             {
                 var response = await Client.GetAsync(url);
+             
                 var result = await response.Content.ReadAsStringAsync();
+                ApiResponse resource;
 
-                if (string.IsNullOrEmpty(result))
+                if (result.Contains("error"))
                 {
-                    throw new Exception("Something Bad Happened");
+                    resource = JsonConvert.DeserializeObject<ErrorResponse>(result);
+                }
+                else
+                {
+                    resource = JsonConvert.DeserializeObject<SuccessResponse>(result);
                 }
 
-                var resource = JsonConvert.DeserializeObject<T>(result);
                 return resource;
             });
         }
