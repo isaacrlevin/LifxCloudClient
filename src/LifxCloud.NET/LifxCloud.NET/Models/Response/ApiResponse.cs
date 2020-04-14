@@ -17,7 +17,6 @@ namespace LifxCloud.NET.Models
 
     public class Result
     {
-
         [JsonProperty("id")]
         public string Id { get; private set; }
 
@@ -30,8 +29,6 @@ namespace LifxCloud.NET.Models
         public bool IsSuccessful { get { return Status == "ok"; } }
 
         public bool IsTimedOut { get { return Status == "timed_out"; } }
-
-
     }
 
     public class ErrorResponse : ApiResponse

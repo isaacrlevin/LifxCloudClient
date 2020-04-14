@@ -51,7 +51,16 @@ namespace LifxCloud.NET
 
         public async Task<ColorResult> ValidateColor(string color)
         {
-            return await GetResponseData<ColorResult>($"{ColorEndPoint}?string={color}");
+            var response = await GetResponseData<ColorResult>($"{ColorEndPoint}?string={color}");
+
+            if (response.GetType() == typeof(ErrorResponse))
+            {
+                throw new Exception(((ErrorResponse)response).Error);
+            }
+            else
+            {
+                return (ColorResult)response;
+            }
         }
 
         internal static async Task<ApiResponse> PutResponseData<T>(string url, object data)
@@ -100,14 +109,14 @@ namespace LifxCloud.NET
             });
         }
 
-        internal static async Task<ApiResponse> GetResponseData<T>(String url)
+        internal static async Task<object> GetResponseData<T>(String url)
         {
             return await await ResilientCall(async () =>
             {
                 var response = await Client.GetAsync(url);
              
                 var result = await response.Content.ReadAsStringAsync();
-                ApiResponse resource;
+                object resource;
 
                 if (result.Contains("error"))
                 {
@@ -115,7 +124,7 @@ namespace LifxCloud.NET
                 }
                 else
                 {
-                    resource = JsonConvert.DeserializeObject<SuccessResponse>(result);
+                    resource = JsonConvert.DeserializeObject<T>(result);
                 }
 
                 return resource;

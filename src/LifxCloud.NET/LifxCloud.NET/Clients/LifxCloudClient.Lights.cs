@@ -12,12 +12,21 @@ namespace LifxCloud.NET
         public async Task<List<Light>> ListLights(Selector selector = null)
         {
             if (selector == null) { selector = Selector.All; }
-            List<Light> lights = await GetResponseData<List<Light>>($"{LightEndPoint}{selector}");
-            foreach (var light in lights)
+            var response = await GetResponseData<List<Light>>($"{LightEndPoint}{selector}");
+
+            if (response.GetType() == typeof(ErrorResponse))
             {
-                light.Client = this;
+                throw new Exception(((ErrorResponse)response).Error);
             }
-            return lights;
+            else
+            {
+                var lights = (List<Light>)response;
+                foreach (var light in lights)
+                {
+                    light.Client = this;
+                }
+                return lights;
+            }
         }
 
         /// <summary>
