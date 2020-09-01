@@ -22,7 +22,7 @@ Console.WriteLine("Setting State");
 var result = await client.SetState(lights.FirstOrDefault().id,
     new Models.SetStateRequest
     {
-        power = "on",
+        power = PowerState.On,
         brightness = 1,
         duration = 1,
         color = "yellow saturation:1"
