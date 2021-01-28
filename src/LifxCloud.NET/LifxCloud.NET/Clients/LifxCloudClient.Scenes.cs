@@ -30,7 +30,7 @@ namespace LifxCloud.NET
         }
 
         public async Task<Scene> GetScene(string selector)
-        {             
+        {
             var response = await GetResponseData<ApiResponse>($"{SceneEndPoint}{selector}");
 
             if (response.GetType() == typeof(ErrorResponse))
@@ -45,7 +45,7 @@ namespace LifxCloud.NET
 
         public async Task<ApiResponse> ActivateScene(string scene_uuid, SetStateRequest request)
         {
-            return await PutResponseData<ApiResponse>($"{SceneEndPoint}{scene_uuid}/activate", request);
+            return await PutResponseData<ApiResponse>($"{SceneEndPoint}scene_id:{scene_uuid}/activate", request);
         }
     }
 }
