@@ -80,7 +80,7 @@ namespace LifxCloud.NET.Models
 
         [JsonProperty("last_seen")]
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime LastSeen { get; private set; }
+        public DateTime? LastSeen { get; private set; }
 
         [JsonProperty("seconds_since_seen")]
         public float SecondsSinceSeen { get; private set; }
