@@ -2,6 +2,7 @@
 using LifxCloud.NET.Models.Response;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace LifxCloud.NET
             else
             {
                 var lights = (List<Light>)response;
+                lights = lights.Where(a => a.LastSeen != null).ToList();
                 foreach (var light in lights)
                 {
                     light.Client = this;
