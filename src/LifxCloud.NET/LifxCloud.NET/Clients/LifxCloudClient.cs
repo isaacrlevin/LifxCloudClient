@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace LifxCloud.NET
 {
-    public partial class LifxCloudClient
+    public partial class LifxCloudClient : IDisposable
     {
 
         internal const float DEFAULT_DURATION = 1f;
         internal const PowerState DEFAULT_POWER_ON = PowerState.On ;
 
-        private static HttpClient Client { get; set; }
+        private HttpClient _client { get; set; }
 
         private const string Url = "https://api.lifx.com/v1/";
 
@@ -43,9 +43,9 @@ namespace LifxCloud.NET
         public void Initialize(string appToken)
         {
             RequestFactory _factory = new RequestFactory();
-            Client = _factory.CreateClient(new AuthenticationHeaderValue("Bearer", appToken));
+            _client = _factory.CreateClient(new AuthenticationHeaderValue("Bearer", appToken));
 
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
             appToken);
         }
 
@@ -63,12 +63,12 @@ namespace LifxCloud.NET
             }
         }
 
-        internal static async Task<ApiResponse> PutResponseData<T>(string url, object data)
+        internal async Task<ApiResponse> PutResponseData<T>(string url, object data)
         {
             return await await ResilientCall(async () =>
             {
                 var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-                var response = await Client.PutAsync(url, content);
+                var response = await _client.PutAsync(url, content);
                 var result = await response.Content.ReadAsStringAsync();
 
                 ApiResponse resource;
@@ -86,12 +86,12 @@ namespace LifxCloud.NET
             });
         }
 
-        internal static async Task<ApiResponse> PostResponseData<T>(string url, object data)
+        internal async Task<ApiResponse> PostResponseData<T>(string url, object data)
         {
             return await await ResilientCall(async () =>
             {
                 var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-                var response = await Client.PostAsync(url, content);
+                var response = await _client.PostAsync(url, content);
                 var result = await response.Content.ReadAsStringAsync();
 
                 ApiResponse resource;
@@ -109,11 +109,11 @@ namespace LifxCloud.NET
             });
         }
 
-        internal static async Task<object> GetResponseData<T>(String url)
+        internal async Task<object> GetResponseData<T>(String url)
         {
             return await await ResilientCall(async () =>
             {
-                var response = await Client.GetAsync(url);
+                var response = await _client.GetAsync(url);
              
                 var result = await response.Content.ReadAsStringAsync();
                 object resource;
@@ -131,7 +131,7 @@ namespace LifxCloud.NET
             });
         }
 
-        async static Task<T> ResilientCall<T>(Func<T> block)
+        async Task<T> ResilientCall<T>(Func<T> block)
         {
             int currentRetry = 0;
             TimeSpan delay = TimeSpan.FromSeconds(2);
@@ -181,6 +181,22 @@ namespace LifxCloud.NET
 
             // Additional exception checking logic goes here.
             return false;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _client?.Dispose();
+        }
+        
+        ~LifxCloudClient()
+        {
+            Dispose(false);
         }
     }
 }
